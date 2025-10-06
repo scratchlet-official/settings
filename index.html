@@ -11,20 +11,19 @@
 :root{
   --primary: #FF8C00;
   --secondary: #FFA500;
-  --grid-primary: rgba(255,140,0,0.15);
-  --grid-secondary: rgba(255,165,0,0.15);
-  --bg: linear-gradient(var(--grid-primary) 1px, transparent 1px),
-        linear-gradient(90deg, var(--grid-secondary) 1px, transparent 1px),
-        linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   --text: #fff;
 }
 
+/* ---------- Body ---------- */
 body{
-  background: var(--bg);
-  background-size:40px 40px;
-  min-height:100vh;
-  padding:20px;
-  color:var(--text);
+  background:
+    linear-gradient(rgba(255,140,0,0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,165,0,0.15) 1px, transparent 1px),
+    linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  background-size: 40px 40px;
+  min-height: 100vh;
+  padding: 20px;
+  color: var(--text);
   transition: background .5s ease, color .35s;
 }
 
@@ -54,15 +53,35 @@ h1 { font-family:"Titan One",sans-serif; font-size:2.2rem; text-align:center; ma
 
 .preview-box{
   height:120px; border-radius:16px; border:2px solid rgba(255,255,255,0.28);
-  margin-bottom:22px; background:var(--bg);
+  margin-bottom:22px;
+  background:
+    linear-gradient(rgba(255,140,0,0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,165,0,0.15) 1px, transparent 1px),
+    linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  background-size:40px 40px;
   transition:background .5s ease, box-shadow .5s ease;
 }
 
-/* ---------- Labels and inputs ---------- */
+/* ---------- Labels and Inputs ---------- */
 label { display:block; margin:12px 0 8px; font-weight:700; color:rgba(255,255,255,0.95); }
-input[type="text"], input[type="password"]{ width:100%; padding:12px; border-radius:10px; border:none; font-size:1rem; margin-bottom:10px; }
 
-/* ---------- Color cards ---------- */
+input[type="text"], input[type="password"]{
+  width:100%; padding:12px 14px; border-radius:12px; border:none; font-size:1rem;
+  margin-bottom:10px; background:rgba(255,255,255,0.15); color:#fff;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.3); transition: all .3s ease;
+}
+input[type="text"]:focus, input[type="password"]:focus { background:rgba(255,255,255,0.25); outline:none; }
+
+/* ---------- Password Toggle ---------- */
+.password-row { display:flex; align-items:center; gap:8px; }
+.toggle-password {
+  background: rgba(255,255,255,0.15); color: #fff; border:none; border-radius:10px;
+  padding:0 10px; font-size:1.1rem; cursor:pointer; height:44px;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.3); transition: all .25s ease;
+}
+.toggle-password:hover { background: rgba(255,255,255,0.25); box-shadow:0 0 10px rgba(255,255,255,0.3), inset 0 2px 6px rgba(0,0,0,0.3); }
+
+/* ---------- Color Cards ---------- */
 .color-card{
   background:rgba(255,255,255,0.14);
   padding:16px; border-radius:14px; margin-bottom:18px;
@@ -86,51 +105,17 @@ input[type="text"], input[type="password"]{ width:100%; padding:12px; border-rad
 }
 .color-picker-panel.show { display:flex; }
 
-/* ---------- Slider ---------- */
-input[type=range]{
-  -webkit-appearance:none; width:100%; height:14px; border-radius:7px;
-  background:linear-gradient(to right, var(--primary) 0%, #ccc 0%);
-  border: 2px solid rgba(255,255,255,0.3);
-  outline:none; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
-  transition: background .3s ease;
-}
-input[type=range]::-webkit-slider-thumb{
-  -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
-  background:#fff; border:2px solid rgba(0,0,0,0.2);
-  margin-top:-3px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.25);
-  transition: transform .2s ease, box-shadow .2s ease;
-}
-input[type=range]::-webkit-slider-thumb:hover{ transform:scale(1.2); box-shadow:0 0 12px rgba(255,255,255,0.6); }
-
-input[type=range]::-moz-range-track{
-  height:14px; border-radius:7px;
-  background:linear-gradient(to right, var(--primary) 0%, #ccc 0%);
-  border:2px solid rgba(255,255,255,0.3);
-}
-input[type=range]::-moz-range-thumb{
-  width:20px; height:20px; border-radius:50%;
-  background:#fff; border:2px solid rgba(0,0,0,0.2);
-  cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.25);
-  transition: transform .2s ease, box-shadow .2s ease;
-}
-input[type=range]::-moz-range-thumb:hover{ transform:scale(1.2); box-shadow:0 0 12px rgba(255,255,255,0.6); }
-
-/* ---------- Slider labels ---------- */
-.slider-label{ font-weight:700; margin-bottom:4px; color:#fff; text-shadow:1px 1px 2px rgba(0,0,0,0.3); }
-
 /* ---------- Buttons ---------- */
-.controls-row{ display:flex; gap:12px; align-items:center; }
+.controls-row{ display:flex; gap:12px; align-items:center; margin-bottom:10px; }
 .btn{
-  margin-top:10px; padding:10px 16px;
-  border-radius:10px; border:none; font-weight:800; cursor:pointer;
-  background:var(--primary); color:#fff;
-  transition:all .25s ease;
+  padding:10px 16px; border-radius:10px; border:none; font-weight:800; cursor:pointer;
+  background:var(--primary); color:#fff; transition:all .25s ease;
 }
 .btn:hover{ transform:scale(1.05); box-shadow:0 0 10px rgba(255,255,255,0.4); }
 .btn:active{ transform:scale(0.97); }
 .btn.danger{ background:#ff4d4d; }
 
-/* ---------- Alert card ---------- */
+/* ---------- Alerts ---------- */
 .alert-card{
   display:none;
   position:fixed; top:20px; left:50%; transform:translateX(-50%);
@@ -146,6 +131,7 @@ input[type=range]::-moz-range-thumb:hover{ transform:scale(1.2); box-shadow:0 0 
 @media (max-width:720px){
   .controls-row{ flex-direction:column; align-items:flex-start; }
   .color-picker-row{ flex-direction:column; align-items:flex-start; }
+  .password-row{ flex-direction:column; }
 }
 </style>
 </head>
@@ -161,15 +147,16 @@ input[type=range]::-moz-range-thumb:hover{ transform:scale(1.2); box-shadow:0 0 
 
   <!-- Username -->
   <label for="username">Change Username</label>
-  <input id="username" type="text" placeholder="Enter new username">
   <div class="controls-row">
+    <input id="username" type="text" placeholder="Enter new username">
     <button class="btn" onclick="saveUsername()">Save Username</button>
   </div>
 
   <!-- Password -->
   <label for="password">Change Password</label>
-  <input id="password" type="password" placeholder="Enter new password">
-  <div class="controls-row">
+  <div class="controls-row password-row">
+    <input id="password" type="password" placeholder="Enter new password">
+    <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
     <button class="btn" onclick="savePassword()">Save Password</button>
   </div>
 
@@ -232,7 +219,15 @@ input[type=range]::-moz-range-thumb:hover{ transform:scale(1.2); box-shadow:0 0 
 <script>
 // ---------- Utilities ----------
 function hslString(h,s,l){return`hsl(${h},${s}%,${l}%)`;}
-function hslaString(h,s,l,a){return`hsla(${h},${s}%,${l}%,${a})`;}
+function hslToRgb(h, s, l) {
+  let a = s * Math.min(l, 1 - l);
+  const f = n => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color);
+  };
+  return [f(0), f(8), f(4)];
+}
 
 // ---------- Color state ----------
 let pending={primary:{h:30,s:100,l:50},secondary:{h:45,s:100,l:50}};
@@ -261,13 +256,15 @@ function applyPending(color){
 // ---------- Update gradient ----------
 function updateGradient(){
   const p=applied.primary,s=applied.secondary;
-  const gridPrimary=hslaString(p.h,Math.max(p.s-50,0),Math.min(p.l+70,95),0.15);
-  const gridSecondary=hslaString(s.h,Math.max(s.s-50,0),Math.min(s.l+70,95),0.15);
+  const gridPrimary=`rgba(${hslToRgb(p.h,p.s/100,p.l/100).join(',')},0.15)`;
+  const gridSecondary=`rgba(${hslToRgb(s.h,s.s/100,s.l/100).join(',')},0.15)`;
   const bg=`linear-gradient(${gridPrimary} 1px, transparent 1px),
             linear-gradient(90deg, ${gridSecondary} 1px, transparent 1px),
             linear-gradient(135deg, ${hslString(p.h,p.s,p.l)} 0%, ${hslString(s.h,s.s,s.l)} 100%)`;
-  document.documentElement.style.setProperty('--bg',bg);
+  document.body.style.background=bg;
+  document.body.style.backgroundSize="40px 40px";
   document.getElementById('previewBox').style.background=bg;
+  document.getElementById('previewBox').style.backgroundSize="40px 40px";
 }
 
 // ---------- Preset ----------
@@ -300,7 +297,7 @@ function saveUsername(){
   const name=document.getElementById('username').value.trim();
   if(name.length<3){showAlert('Username too short'); return;}
   if(name.includes(' ')){showAlert('Username cannot have spaces'); return;}
-  const offensive=['badword1','badword2']; // Add offensive words
+  const offensive=['badword1','badword2']; 
   if(offensive.some(w=>name.toLowerCase().includes(w))){showAlert('Username is offensive'); return;}
   const data=JSON.parse(localStorage.getItem('userData')||'{}');
   data.username=name;
@@ -321,45 +318,27 @@ function savePassword(){
   showAlert('Password saved!');
 }
 
-// ---------- Reset ----------
-function resetColors(){ preset('primary'); preset('secondary'); applyPending('primary'); applyPending('secondary'); }
-function resetData(){ if(confirm('Reset ALL data?')){ localStorage.clear(); location.reload(); } }
-
-// ---------- Slider background ----------
-function updateSliderBackground(slider){
-  const value=slider.value;
-  const min=slider.min||0;
-  const max=slider.max||100;
-  const percentage=(value-min)/(max-min)*100;
-  slider.style.background=`linear-gradient(to right, var(--primary) 0%, var(--primary) ${percentage}%, #ccc ${percentage}%, #ccc 100%)`;
+// ---------- Toggle password ----------
+function togglePassword(){
+  const pw=document.getElementById('password');
+  const btn=document.querySelector('.toggle-password');
+  if(pw.type==='password'){ pw.type='text'; btn.textContent='🙈'; }
+  else{ pw.type='password'; btn.textContent='👁️'; }
 }
+
+// ---------- Reset ----------
+function resetColors(){ preset('primary'); preset('secondary'); applyPending('primary'); applyPending('secondary'); showAlert('Colors reset!'); }
+function resetData(){ localStorage.clear(); showAlert('All data reset!'); setTimeout(()=>location.reload(),1000); }
 
 // ---------- Init ----------
-['primary','secondary'].forEach(color=>{
-  ['Hue','Sat','Light'].forEach(prop=>{
-    const slider=document.getElementById(color+prop);
-    updateSliderBackground(slider);
-    slider.addEventListener('input',()=>{
-      updateDisplay(color);
-      updateSliderBackground(slider);
-    });
+['primary','secondary'].forEach(c=>{
+  ['Hue','Sat','Light'].forEach(s=>{
+    document.getElementById(c+s).addEventListener('input',()=>updateDisplay(c));
   });
+  updateDisplay(c);
+  document.getElementById(c+'Display').style.background=hslString(applied[c].h,applied[c].s,applied[c].l);
 });
-
-function loadSettings(){
-  const data=JSON.parse(localStorage.getItem('userData')||'{}');
-  document.getElementById('username').value=data.username||'Guest';
-  Object.keys(applied).forEach(color=>{
-    const c=applied[color];
-    document.getElementById(color+'Hue').value=c.h;
-    document.getElementById(color+'Sat').value=c.s;
-    document.getElementById(color+'Light').value=c.l;
-    updateDisplay(color);
-    ['Hue','Sat','Light'].forEach(prop=>updateSliderBackground(document.getElementById(color+prop)));
-  });
-  updateGradient();
-}
-loadSettings();
+updateGradient();
 </script>
 </body>
 </html>
