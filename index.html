@@ -105,6 +105,90 @@ input[type="text"]:focus, input[type="password"]:focus { background:rgba(255,255
 }
 .color-picker-panel.show { display:flex; }
 
+/* ---------- Color picker row & slider styles (longer sliders) ---------- */
+.color-picker-row {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:8px;
+}
+
+/* ensure the left container (with label + slider) grows and the value sits to the right */
+.color-picker-row > div:first-child { flex:1; min-width:0; }
+
+/* make sliders span full width of their container */
+.color-picker-row input[type="range"] {
+  width: 100% !important;
+  margin-top: 6px;
+  height: 10px;              /* a bit thicker track for visibility */
+  border-radius: 6px;
+  -webkit-appearance: none;
+  background: #e6e6e6;
+  outline: none;
+  cursor: pointer;
+}
+
+/* track style for Firefox */
+.color-picker-row input[type="range"]::-moz-range-track {
+  height: 10px;
+  border-radius: 6px;
+  background: #e6e6e6;
+}
+
+/* thumb styles */
+.color-picker-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(0,0,0,0.25);
+  margin-top: -4px; /* vertically center the thumb on thicker track */
+}
+
+.color-picker-row input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(0,0,0,0.25);
+}
+
+/* small slider label + value styles */
+.slider-label { font-weight:700; font-size:0.9rem; margin-bottom:4px; color: #222; }
+.color-value { min-width:48px; text-align:right; font-weight:700; color:#333; }
+
+/* ---------- Example Color Box ---------- */
+.example-color-box {
+  width: 100%;
+  height: 50px;
+  border-radius: 10px;
+  margin: 10px 0;
+  border: 2px solid rgba(0,0,0,0.2);
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  position: relative;
+  transition: background .3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  font-size: 0.9rem;
+}
+
+/* slightly dim label backgrounds so gradient remains visible */
+.example-color-box > span {
+  background: rgba(0,0,0,0.18);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
 /* ---------- Buttons ---------- */
 .controls-row{ display:flex; gap:12px; align-items:center; margin-bottom:10px; }
 .btn{
@@ -132,6 +216,8 @@ input[type="text"]:focus, input[type="password"]:focus { background:rgba(255,255
   .controls-row{ flex-direction:column; align-items:flex-start; }
   .color-picker-row{ flex-direction:column; align-items:flex-start; }
   .password-row{ flex-direction:column; }
+  .color-value { text-align:left; width:100%; }
+  .example-color-box { height:48px; font-size:0.85rem; }
 }
 </style>
 </head>
@@ -166,17 +252,30 @@ input[type="text"]:focus, input[type="password"]:focus { background:rgba(255,255
     <div id="primaryDisplay" class="color-display" onclick="togglePicker('primary')"></div>
     <div id="primaryPicker" class="color-picker-panel">
       <div class="color-picker-row">
-        <div style="flex:1;"><div class="slider-label">Hue</div><input id="primaryHue" type="range" min="0" max="360" value="30"></div>
+        <div style="flex:1;">
+          <div class="slider-label">Hue</div>
+          <input id="primaryHue" type="range" min="0" max="360" value="30">
+        </div>
         <div class="color-value" id="primaryHueVal">30°</div>
       </div>
       <div class="color-picker-row">
-        <div style="flex:1;"><div class="slider-label">Saturation</div><input id="primarySat" type="range" min="0" max="100" value="100"></div>
+        <div style="flex:1;">
+          <div class="slider-label">Saturation</div>
+          <input id="primarySat" type="range" min="0" max="100" value="100">
+        </div>
         <div class="color-value" id="primarySatVal">100%</div>
       </div>
       <div class="color-picker-row">
-        <div style="flex:1;"><div class="slider-label">Lightness</div><input id="primaryLight" type="range" min="0" max="100" value="50"></div>
+        <div style="flex:1;">
+          <div class="slider-label">Lightness</div>
+          <input id="primaryLight" type="range" min="0" max="100" value="50">
+        </div>
         <div class="color-value" id="primaryLightVal">50%</div>
       </div>
+
+      <!-- Gradient example -->
+      <div class="example-color-box" id="primaryExample"><span>Current</span><span>New</span></div>
+
       <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
         <button class="btn" onclick="applyPending('primary')">Apply Primary</button>
         <button class="btn" onclick="preset('primary')">Preset Orange</button>
@@ -190,17 +289,30 @@ input[type="text"]:focus, input[type="password"]:focus { background:rgba(255,255
     <div id="secondaryDisplay" class="color-display" onclick="togglePicker('secondary')"></div>
     <div id="secondaryPicker" class="color-picker-panel">
       <div class="color-picker-row">
-        <div style="flex:1;"><div class="slider-label">Hue</div><input id="secondaryHue" type="range" min="0" max="360" value="45"></div>
+        <div style="flex:1;">
+          <div class="slider-label">Hue</div>
+          <input id="secondaryHue" type="range" min="0" max="360" value="45">
+        </div>
         <div class="color-value" id="secondaryHueVal">45°</div>
       </div>
       <div class="color-picker-row">
-        <div style="flex:1;"><div class="slider-label">Saturation</div><input id="secondarySat" type="range" min="0" max="100" value="100"></div>
+        <div style="flex:1;">
+          <div class="slider-label">Saturation</div>
+          <input id="secondarySat" type="range" min="0" max="100" value="100">
+        </div>
         <div class="color-value" id="secondarySatVal">100%</div>
       </div>
       <div class="color-picker-row">
-        <div style="flex:1;"><div class="slider-label">Lightness</div><input id="secondaryLight" type="range" min="0" max="100" value="50"></div>
+        <div style="flex:1;">
+          <div class="slider-label">Lightness</div>
+          <input id="secondaryLight" type="range" min="0" max="100" value="50">
+        </div>
         <div class="color-value" id="secondaryLightVal">50%</div>
       </div>
+
+      <!-- Gradient example -->
+      <div class="example-color-box" id="secondaryExample"><span>Current</span><span>New</span></div>
+
       <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
         <button class="btn" onclick="applyPending('secondary')">Apply Secondary</button>
         <button class="btn" onclick="preset('secondary')">Preset Orange</button>
@@ -235,14 +347,25 @@ let applied=JSON.parse(localStorage.getItem('appliedColors')||'{"primary":{"h":3
 
 // ---------- Update color display ----------
 function updateDisplay(color){
-  const h=+document.getElementById(color+'Hue').value;
-  const s=+document.getElementById(color+'Sat').value;
-  const l=+document.getElementById(color+'Light').value;
-  document.getElementById(color+'HueVal').textContent=h+'°';
-  document.getElementById(color+'SatVal').textContent=s+'%';
-  document.getElementById(color+'LightVal').textContent=l+'%';
-  document.getElementById(color+'Display').style.background=hslString(h,s,l);
-  pending[color]={h,s,l};
+  const h = +document.getElementById(color+'Hue').value;
+  const s = +document.getElementById(color+'Sat').value;
+  const l = +document.getElementById(color+'Light').value;
+
+  document.getElementById(color+'HueVal').textContent = h + '°';
+  document.getElementById(color+'SatVal').textContent = s + '%';
+  document.getElementById(color+'LightVal').textContent = l + '%';
+
+  pending[color] = { h, s, l };
+
+  // small color display block
+  document.getElementById(color+'Display').style.background = hslString(h, s, l);
+
+  // Gradient preview (from applied -> pending)
+  const appliedColor = applied[color];
+  const appliedHSL = hslString(appliedColor.h, appliedColor.s, appliedColor.l);
+  const pendingHSL = hslString(h, s, l);
+  const exampleBox = document.getElementById(color+'Example');
+  exampleBox.style.background = `linear-gradient(to right, ${appliedHSL} 0%, ${pendingHSL} 100%)`;
 }
 
 // ---------- Apply color ----------
@@ -297,7 +420,7 @@ function saveUsername(){
   const name=document.getElementById('username').value.trim();
   if(name.length<3){showAlert('Username too short'); return;}
   if(name.includes(' ')){showAlert('Username cannot have spaces'); return;}
-  const offensive=['badword1','badword2']; 
+  const offensive=['badword1','badword2'];
   if(offensive.some(w=>name.toLowerCase().includes(w))){showAlert('Username is offensive'); return;}
   const data=JSON.parse(localStorage.getItem('userData')||'{}');
   data.username=name;
@@ -310,7 +433,7 @@ function savePassword(){
   const pw=document.getElementById('password').value.trim();
   if(pw.length<6){showAlert('Password too short'); return;}
   if(pw.includes(' ')){showAlert('Password cannot have spaces'); return;}
-  const offensive=['badword1','badword2']; 
+  const offensive=['badword1','badword2'];
   if(offensive.some(w=>pw.toLowerCase().includes(w))){showAlert('Password is offensive'); return;}
   const data=JSON.parse(localStorage.getItem('userData')||'{}');
   data.password=pw;
